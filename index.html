@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <style>
+            th,
+            td {
+                width: 10%;
+                text-align: center;
+            }
+
+            #headers {
+                display: flex;
+                flex-direction: row;
+            }
+            .header {
+                margin-left: 10rem;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app">
+            <label>Query:</label>
+            <input id="query" type="text" placeholder="Query here" />
+            <button @click="search">Search</button>
+
+            <div id="headers">
+                <div class="header">
+                    <h2>Postgres</h2>
+                    <p v-for="v in psql" :key="v">{{ v }}</p>
+                </div>
+                <div class="header">
+                    <h2>Meilisearch</h2>
+                    <p v-for="v in meili" :key="v">{{ v }}</p>
+                </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+        <script>
+            var v = new Vue({
+                el: "#app",
+                data: {
+                    psql: ["b"],
+                    meili: ["c"],
+                },
+                methods: {
+                    search() {
+                        axios
+                            .get("/search?query="+document.getElementById("query").value)
+                            .then((json) => { 
+                                console.log(json)
+                                this.psql = json.data.postgres
+                                this.meili = json.data.meilisearch
+                            });
+                    },
+                },
+            });
+        </script>
+    </body>
+</html>
