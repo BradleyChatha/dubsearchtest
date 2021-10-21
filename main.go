@@ -105,7 +105,7 @@ func search(query string) (postgres []string, meili []string) {
 		postgres = append(postgres, str)
 	}
 
-	res, _ := client.Index("packages").Search(query, &meilisearch.SearchRequest{})
+	res, _ := client.Index("packages").Search(query, &meilisearch.SearchRequest{Limit: 100})
 	for _, hit := range res.Hits {
 		r, _ := json.Marshal(hit)
 		var data MirrorExtract
